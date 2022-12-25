@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Starter Template - Materialize</title>
+  <script src="http://lib.xinhuanet.com/jquery/jquery1.12.4/jquery.min.js"></script>  
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="./static/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="./static/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+
+<body>
+  <nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Logo</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="https://bcchong07.wixsite.com/atristressdetection">Atri Stress Detector </a></li>
+      </ul>
+
+      <ul id="nav-mobile" class="sidenav">
+        <li><a href="https://bcchong07.wixsite.com/atristressdetection">Atri Stress Detector </a></li>
+      </ul>
+      <a href="https://bcchong07.wixsite.com/atristressdetection" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+
+
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br>
+      <h1 class="header center orange-text">Stress Prediction</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">Study on the correlation between heart rate and Stress
+        <br>
+        </h5>
+      </div>
+
+  <div class="row">
+    <form action='/predict' id="fm" method="post" class="col s12" name="data">
+      <div class="row">
+        <div class="input-field col s4" style="margin-top: 27px;" >
+            <label for="first_name"><b>Heart Rate</b></label>
+            <br>
+          <input placeholder="Heart rate value" name="Temperature" id="first_name" type="text" class="validate">
+        </div>
+        <div class="input-field col s4"  style="margin-top: 27px;">
+
+          <label for="last_name"><b>Age</b></label>
+            <br>
+          <input id="last_name" name="Oxygen" placeholder="Age"  type="text" class="validate">
+
+        </div>
+
+        <div class="input-field col s4"    style="margin-top: 0px;" >
+            <label for="_name"><b>Status(1-4)</b></label> 
+            <br><br>
+            <select style="display: block; "  id='status'>
+                <option value="1">rest</option>
+                <option value="2">work</option>       
+                <option value="3">sleep</option>
+                <option value="4">jogging</option>
+            
+            </select>
+             <!-- <label for="_name"><b>Status(1-4)</b></label>  
+            <br>
+          <input id="_name" name="Humidity" placeholder="Humidity %" type="text" class="validate"> -->
+
+        </div>
+
+      </div>
+
+      <div class="row center">
+
+          <button  type="button"  id="submit" class="btn-large waves-effect waves-light orange">Predict Probability</button>
+      </div>
+    </form>
+      </div>
+  <div class="resulr">
+     <!-- <div class="b1" style="display: none; ">
+        Temperature:<nobr> </nobr> &nbsp;&nbsp; Oxygen:<nobr> </nobr>&nbsp;&nbsp; Oxygen:<nobr> </nobr>
+      
+      </div>    -->
+      <div > {{pred}}</div>
+    </div>
+    </div>
+  </div>
+
+
+    <br><br>
+  </div>
+  </div>>
+
+  <footer class="page-footer orange">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Company Bio</h5>
+          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+
+
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Settings</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="./static/js/materialize.js"></script>
+  <script src="./static/js/init.js"></script>
+  <script>
+    (function(){
+    
+    
+        $("#submit").click(function(){ 
+        
+            var formData = $('#fm' ).serialize();
+            
+            var hr = $("#first_name ").val()
+            var age = $("#last_name ").val()
+            var status = $("#status ").val()
+            
+            
+            
+
+            $.ajax({
+                    type: 'get',
+                    url: '/test',
+                    data: {'hr':hr,'age':age,'status':status},
+                    success: function(result) {
+                    
+                                //alert(result)
+                                console.log(result)
+                                 var  output =  '';
+                                if (result.output == '0'){
+                                    output = " No Stress！"
+                                }
+                                else{
+                                    output = " Stressful！"
+                                }
+                                
+                                //alert(result.output)
+                               
+                                $(".resulr").children()[0].innerText =  output
+                         /**          $(".b1").css('display','block'); 
+                                $(".b1").children()[0].innerText =  $("#first_name").val();
+                                $(".b1").children()[1].innerText =  $("#last_name").val();         
+                                $(".b1").children()[1].innerText =  $("#_name").val();   **/         
+    
+                    },
+ 
+})
+            
+            
+            
+        
+        })
+ 
+    })();
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    </script>  
+  </body>
+</html>
+
